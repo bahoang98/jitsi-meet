@@ -85,56 +85,58 @@ class Filmstrip extends Component<Props> {
      * @inheritdoc
      * @returns {ReactElement}
      */
-    render() {
-        const { _aspectRatio, _enabled, _participants, _visible } = this.props;
-
-        if (!_enabled) {
-            return null;
-        }
-
-        const isNarrowAspectRatio = _aspectRatio === ASPECT_RATIO_NARROW;
-        const filmstripStyle = isNarrowAspectRatio ? styles.filmstripNarrow : styles.filmstripWide;
-
-        return (
-            <Container
-                style = { filmstripStyle }
-                visible = { _visible }>
-                {
-                    this._separateLocalThumbnail
-                        && !isNarrowAspectRatio
-                        && <LocalThumbnail />
-                }
-                <ScrollView
-                    horizontal = { isNarrowAspectRatio }
-                    showsHorizontalScrollIndicator = { false }
-                    showsVerticalScrollIndicator = { false }
-                    style = { styles.scrollView } >
-                    {
-                        !this._separateLocalThumbnail && !isNarrowAspectRatio
-                            && <LocalThumbnail />
-                    }
-                    {
-
-                        this._sort(_participants, isNarrowAspectRatio)
-                            .map(p => (
-                                <Thumbnail
-                                    key = { p.id }
-                                    participant = { p } />))
-
-                    }
-                    {
-                        !this._separateLocalThumbnail && isNarrowAspectRatio
-                            && <LocalThumbnail />
-                    }
-                </ScrollView>
-                {
-                    this._separateLocalThumbnail && isNarrowAspectRatio
-                        && <LocalThumbnail />
-                }
-            </Container>
-        );
+    // render() {
+    //     const { _aspectRatio, _enabled, _participants, _visible } = this.props;
+    //
+    //     if (!_enabled) {
+    //         return null;
+    //     }
+    //
+    //     const isNarrowAspectRatio = _aspectRatio === ASPECT_RATIO_NARROW;
+    //     const filmstripStyle = isNarrowAspectRatio ? styles.filmstripNarrow : styles.filmstripWide;
+    //
+    //     return (
+    //         <Container
+    //             style = { filmstripStyle }
+    //             visible = { _visible }>
+    //             {
+    //                 this._separateLocalThumbnail
+    //                     && !isNarrowAspectRatio
+    //                     && <LocalThumbnail />
+    //             }
+    //             <ScrollView
+    //                 horizontal = { isNarrowAspectRatio }
+    //                 showsHorizontalScrollIndicator = { false }
+    //                 showsVerticalScrollIndicator = { false }
+    //                 style = { styles.scrollView } >
+    //                 {
+    //                     !this._separateLocalThumbnail && !isNarrowAspectRatio
+    //                         && <LocalThumbnail />
+    //                 }
+    //                 {
+    //
+    //                     this._sort(_participants, isNarrowAspectRatio)
+    //                         .map(p => (
+    //                             <Thumbnail
+    //                                 key = { p.id }
+    //                                 participant = { p } />))
+    //
+    //                 }
+    //                 {
+    //                     !this._separateLocalThumbnail && isNarrowAspectRatio
+    //                         && <LocalThumbnail />
+    //                 }
+    //             </ScrollView>
+    //             {
+    //                 this._separateLocalThumbnail && isNarrowAspectRatio
+    //                     && <LocalThumbnail />
+    //             }
+    //         </Container>
+    //     );
+    // }
+    render () {
+        return null;
     }
-
     /**
      * Sorts a specific array of {@code Participant}s in display order.
      *

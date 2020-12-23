@@ -34,8 +34,7 @@ class CalleeInfoContainer extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        // return this.props._calleeInfoVisible ? <CalleeInfo /> : null;
-        return null
+        return this.props._calleeInfoVisible ? <CalleeInfo /> : null;
     }
 }
 
