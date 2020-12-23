@@ -12,7 +12,7 @@ function SwitchCameraButton(props) {
     }
 
     const _isDisabled = () => {
-        return props._audioOnly || this.props._videoMuted;
+        return props._audioOnly || props._videoMuted;
     }
 
     return (
