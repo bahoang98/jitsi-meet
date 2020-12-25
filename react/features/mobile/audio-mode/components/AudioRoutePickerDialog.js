@@ -246,6 +246,7 @@ class AudioRoutePickerDialog extends Component<Props, State> {
     _onSelectDeviceFn(device: Device) {
         return () => {
             this._hide();
+            this.props.callBack(device)
             AudioMode.setAudioDevice(device.uid || device.type);
         };
     }
