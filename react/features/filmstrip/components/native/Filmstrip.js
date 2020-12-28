@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import {ScrollView, View} from 'react-native';
 
 import { Container, Platform } from '../../../base/react';
 import { connect } from '../../../base/redux';
@@ -11,6 +11,8 @@ import { isFilmstripVisible } from '../../functions';
 import LocalThumbnail from './LocalThumbnail';
 import Thumbnail from './Thumbnail';
 import styles from './styles';
+import {isLocalTrackMuted} from "../../../base/tracks";
+import {MEDIA_TYPE} from "../../../base/media";
 
 /**
  * Filmstrip component's property types.
@@ -79,6 +81,10 @@ class Filmstrip extends Component<Props> {
         this._separateLocalThumbnail = Platform.OS !== 'android';
     }
 
+    _isDisabled = () => {
+        return this.props._audioOnly || this.props._videoMuted;
+    }
+
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -96,42 +102,47 @@ class Filmstrip extends Component<Props> {
         const filmstripStyle = isNarrowAspectRatio ? styles.filmstripNarrow : styles.filmstripWide;
 
         return (
-            <Container
-                style = { filmstripStyle }
-                visible = { _visible }>
+            <View>
                 {
-                    this._separateLocalThumbnail
-                        && !isNarrowAspectRatio
-                        && <LocalThumbnail />
-                }
-                <ScrollView
-                    horizontal = { isNarrowAspectRatio }
-                    showsHorizontalScrollIndicator = { false }
-                    showsVerticalScrollIndicator = { false }
-                    style = { styles.scrollView } >
-                    {
-                        !this._separateLocalThumbnail && !isNarrowAspectRatio
-                            && <LocalThumbnail />
-                    }
-                    {/*{*/}
+                    !this._isDisabled() &&
+                        <Container
+                            style = { filmstripStyle }
+                            visible = { _visible }>
+                            {
+                                this._separateLocalThumbnail
+                                && !isNarrowAspectRatio
+                                && <LocalThumbnail />
+                            }
+                            <ScrollView
+                                horizontal = { isNarrowAspectRatio }
+                                showsHorizontalScrollIndicator = { false }
+                                showsVerticalScrollIndicator = { false }
+                                style = { styles.scrollView } >
+                                {
+                                    !this._separateLocalThumbnail && !isNarrowAspectRatio
+                                    && <LocalThumbnail />
+                                }
+                                {/*{*/}
 
-                    {/*    this._sort(_participants, isNarrowAspectRatio)*/}
-                    {/*        .map(p => (*/}
-                    {/*            <Thumbnail*/}
-                    {/*                key = { p.id }*/}
-                    {/*                participant = { p } />))*/}
+                                {/*    this._sort(_participants, isNarrowAspectRatio)*/}
+                                {/*        .map(p => (*/}
+                                {/*            <Thumbnail*/}
+                                {/*                key = { p.id }*/}
+                                {/*                participant = { p } />))*/}
 
-                    {/*}*/}
-                    {
-                        !this._separateLocalThumbnail && isNarrowAspectRatio
-                            && <LocalThumbnail />
-                    }
-                </ScrollView>
-                {
-                    this._separateLocalThumbnail && isNarrowAspectRatio
-                        && <LocalThumbnail />
+                                {/*}*/}
+                                {
+                                    !this._separateLocalThumbnail && isNarrowAspectRatio
+                                    && <LocalThumbnail />
+                                }
+                            </ScrollView>
+                            {
+                                this._separateLocalThumbnail && isNarrowAspectRatio
+                                && <LocalThumbnail />
+                            }
+                        </Container>
                 }
-            </Container>
+            </View>
         );
     }
     // render () {
@@ -177,12 +188,16 @@ class Filmstrip extends Component<Props> {
 function _mapStateToProps(state) {
     const participants = state['features/base/participants'];
     const { enabled } = state['features/filmstrip'];
+    const { enabled: audioOnly } = state['features/base/audio-only'];
+    const tracks = state['features/base/tracks'];
 
     return {
         _aspectRatio: state['features/base/responsive-ui'].aspectRatio,
         _enabled: enabled,
         _participants: participants.filter(p => !p.local),
-        _visible: isFilmstripVisible(state)
+        _visible: isFilmstripVisible(state),
+        _audioOnly: Boolean(audioOnly),
+        _videoMuted: isLocalTrackMuted(tracks, MEDIA_TYPE.VIDEO),
     };
 }
 

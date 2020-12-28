@@ -91,7 +91,6 @@ function _mapStateToProps(state): Object {
     return {
         _audioOnly: Boolean(audioOnly),
         _videoMuted: isLocalTrackMuted(tracks, MEDIA_TYPE.VIDEO),
-        _devices: state['features/mobile/audio-mode'].devices
     };
 }
 
