@@ -21,7 +21,6 @@ function SwitchCameraButton(props) {
     }
 
     useEffect(() => {
-        console.log('device selected: ', deviceSelected, props.tracks)
         if (deviceSelected[0]?.type === 'SPEAKER') {
             setBackgroundColor('#fff')
         } else {
