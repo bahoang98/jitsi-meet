@@ -12,6 +12,7 @@ import AudioRoutePickerDialog
 
 function SwitchCameraButton(props) {
     const [backgroundColor, setBackgroundColor] = useState('#fff');
+    const deviceSelected = props._devices.filter(item => item.selected);
     const _handleClick = () => {
         !_isDisabled() ?
             props.dispatch(toggleCameraFacingMode())
@@ -19,12 +20,20 @@ function SwitchCameraButton(props) {
             props.dispatch(openDialog(AudioRoutePickerDialog, {callBack: getBackgroundColor }))
     }
 
+    useEffect(() => {
+        console.log('device selected: ', deviceSelected, props.tracks)
+        if (deviceSelected[0]?.type === 'SPEAKER') {
+            setBackgroundColor('#fff')
+        } else {
+            setBackgroundColor('#A0A0A0')
+        }
+    }, []);
 
     const getBackgroundColor = (device) => {
         if (device.type === "SPEAKER") {
             setBackgroundColor('#fff')
         } else {
-            setBackgroundColor('#ddd')
+            setBackgroundColor('#A0A0A0')
         }
     }
 
@@ -87,10 +96,10 @@ const styles = StyleSheet.create({
 function _mapStateToProps(state): Object {
     const { enabled: audioOnly } = state['features/base/audio-only'];
     const tracks = state['features/base/tracks'];
-
     return {
         _audioOnly: Boolean(audioOnly),
         _videoMuted: isLocalTrackMuted(tracks, MEDIA_TYPE.VIDEO),
+        _devices: state['features/mobile/audio-mode'].devices
     };
 }
 

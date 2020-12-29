@@ -248,6 +248,7 @@ class AudioRoutePickerDialog extends Component<Props, State> {
             this._hide();
             this.props.callBack(device)
             AudioMode.setAudioDevice(device.uid || device.type);
+            console.log('haha: ', device.uid, device.type)
         };
     }
 
